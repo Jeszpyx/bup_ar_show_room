@@ -21,15 +21,22 @@
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0,0,0,0.5);
-            padding: 8px 12px;
-            border-radius: 12px;
+            background: rgba(0,0,0,0.6);
+            padding: 10px 14px;
+            border-radius: 14px;
             color: white;
             font-family: sans-serif;
             font-size: 14px;
+            z-index: 10;
+            text-align: center;
         }
         input[type=range] {
             width: 200px;
+        }
+        label {
+            display: block;
+            margin-top: 6px;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -52,23 +59,37 @@
 
     <!-- Модель на QR -->
     <a-entity mindar-image-target="targetIndex: 0">
-        <a-gltf-model id="myModel" src="#model" scale="0.1 0.1 0.1"></a-gltf-model>
+        <a-gltf-model id="myModel" src="#model" scale="0.1 0.1 0.1" position="0 0 0"></a-gltf-model>
     </a-entity>
 </a-scene>
 
 <!-- UI снизу -->
 <div id="ui">
-    Масштаб:
-    <input type="range" id="scaleSlider" min="0.05" max="1" step="0.05" value="0.1">
+    <label>
+        Масштаб:
+        <input type="range" id="scaleSlider" min="0.05" max="1" step="0.05" value="0.1">
+    </label>
+    <label>
+        Высота:
+        <input type="range" id="ySlider" min="-1" max="1" step="0.05" value="0">
+    </label>
 </div>
 
 <script>
-    const slider = document.getElementById('scaleSlider');
     const model = document.getElementById('myModel');
+    const scaleSlider = document.getElementById('scaleSlider');
+    const ySlider = document.getElementById('ySlider');
 
-    slider.addEventListener('input', () => {
-        const s = slider.value;
+    // Регулировка масштаба
+    scaleSlider.addEventListener('input', () => {
+        const s = scaleSlider.value;
         model.setAttribute('scale', `${s} ${s} ${s}`);
+    });
+
+    // Регулировка высоты (ось Y)
+    ySlider.addEventListener('input', () => {
+        const pos = model.getAttribute('position');
+        model.setAttribute('position', `0 ${ySlider.value} 0`);
     });
 </script>
 </body>
